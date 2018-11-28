@@ -38,7 +38,7 @@ public class App {
                 if (entrada.getFormatoSalida().equals("json")) {
                     salida = service.ejecutarResultadosJson(entrada.getSql());
                 } else if (entrada.getFormatoSalida().equals("text")) {
-                    salida = service.ejecutarResultadosTabla(entrada.getSql());
+                    salida = service.ejecutarResultadosText(entrada.getSql());
                 } else {
                     salida = service.ejecutarResultadosJson(entrada.getSql());
                 }

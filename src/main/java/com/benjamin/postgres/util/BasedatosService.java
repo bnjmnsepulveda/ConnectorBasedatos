@@ -27,6 +27,10 @@ public class BasedatosService {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
+    /**
+     * Crea la conexion a la base de datos.
+     * @throws SQLException 
+     */
     private void connect() throws SQLException {
         String url = "jdbc:postgresql://" + host + ":5432/" + basedatos;
         connection = null;
@@ -38,6 +42,9 @@ public class BasedatosService {
         }
     }
 
+    /**
+     * Cierre de recursos.
+     */
     private void disconnect() {
         try {
             if (connection != null) {
@@ -54,6 +61,10 @@ public class BasedatosService {
         }
     }
 
+    /**
+     * Ejecuta una sentencia SQL simple.
+     * @param sql 
+     */
     public void ejecutarSQL(String sql) {
         try {
             connect();
@@ -66,6 +77,11 @@ public class BasedatosService {
         }
     }
 
+    /**
+     * Ejecuta una sentencia SQL con resultados de salidas en formato json.
+     * @param sql
+     * @return datos en formato json.
+     */
     public String ejecutarResultadosJson(String sql) {
         JsonArray jsonArray = new JsonArray();
         try {
@@ -119,7 +135,12 @@ public class BasedatosService {
         return jsonArray.toString();
     }
 
-    public String ejecutarResultadosTabla(String sql) {
+    /**
+     * Ejecuta una sentencia SQL con una salida en texto simple.
+     * @param sql
+     * @return salida de datos en formato texto.
+     */
+    public String ejecutarResultadosText(String sql) {
         StringBuilder tabla = new StringBuilder("");
         try {
             connect();
