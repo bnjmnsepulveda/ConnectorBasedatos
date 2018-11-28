@@ -1,5 +1,7 @@
 package com.benjamin.postgres.util;
 
+import com.benjamin.postgres.exception.ConnectionException;
+import com.benjamin.postgres.exception.DatabaseException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.sql.Connection;
@@ -25,17 +27,24 @@ public class BasedatosService {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
+    /**
+     * Crea la conexion a la base de datos.
+     * @throws SQLException 
+     */
     private void connect() throws SQLException {
         String url = "jdbc:postgresql://" + host + ":5432/" + basedatos;
         connection = null;
         try {
             Class.forName("org.postgresql.Driver").newInstance();
             connection = DriverManager.getConnection(url, usuario, clave);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            throw new RuntimeException(ex);
+        } catch (Exception ex) {
+            throw new ConnectionException(ex);
         }
     }
 
+    /**
+     * Cierre de recursos.
+     */
     private void disconnect() {
         try {
             if (connection != null) {
@@ -52,18 +61,27 @@ public class BasedatosService {
         }
     }
 
+    /**
+     * Ejecuta una sentencia SQL simple.
+     * @param sql 
+     */
     public void ejecutarSQL(String sql) {
         try {
             connect();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e);
         } finally {
             disconnect();
         }
     }
 
+    /**
+     * Ejecuta una sentencia SQL con resultados de salidas en formato json.
+     * @param sql
+     * @return datos en formato json.
+     */
     public String ejecutarResultadosJson(String sql) {
         JsonArray jsonArray = new JsonArray();
         try {
@@ -72,7 +90,6 @@ public class BasedatosService {
             resultSet = preparedStatement.executeQuery();
             ResultSetMetaData meta = resultSet.getMetaData();
             int cantCol = meta.getColumnCount();
-            System.out.println("columnas:" + cantCol);
             while (resultSet.next()) {
                 JsonObject json = new JsonObject();
                 String valor = "vacio";
@@ -118,7 +135,12 @@ public class BasedatosService {
         return jsonArray.toString();
     }
 
-    public String ejecutarResultadosTabla(String sql) {
+    /**
+     * Ejecuta una sentencia SQL con una salida en texto simple.
+     * @param sql
+     * @return salida de datos en formato texto.
+     */
+    public String ejecutarResultadosText(String sql) {
         StringBuilder tabla = new StringBuilder("");
         try {
             connect();

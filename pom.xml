@@ -39,7 +39,7 @@
                         <argument>host=localhost</argument>
                         <argument>basedatos=chat_acd</argument>
                         <argument>usuario=postgres</argument>
-                        <argument>clave=rockmetal</argument>
+                        <argument>clave=rockmetal3</argument>
                         <argument>formatoSalida=text</argument> 
                         <argument>sql=SELECT count(*) FROM usuario</argument>
                     </arguments>

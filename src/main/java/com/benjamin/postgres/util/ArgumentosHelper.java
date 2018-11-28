@@ -32,7 +32,6 @@ public class ArgumentosHelper {
 
         Field[] argumentFields = clase.getDeclaredFields();
         E configuracion = clase.getConstructor().newInstance();
-        System.out.println("----- procesando argumentos ----");
         String nombreArg;
         String valorArg;
         String tipoObjeto;
@@ -45,7 +44,7 @@ public class ArgumentosHelper {
             }
             for (Field field : argumentFields) {
                 if (nombreArg.equals(field.getName())) {
-                    System.out.println("parametro " + field.getName() + " es tipo " + field.getType().getSimpleName() + " de valor " + valorArg);
+                    //System.out.println("parametro " + field.getName() + " es tipo " + field.getType().getSimpleName() + " de valor " + valorArg);
                     tipoObjeto = field.getType().getSimpleName().toLowerCase();
                     field.setAccessible(true);
                     switch (tipoObjeto) {
@@ -85,8 +84,6 @@ public class ArgumentosHelper {
                 }
             }
         }
-        System.out.println("---- resultados ----");
-        System.out.println("config : " + configuracion);
         return configuracion;
     }
 
