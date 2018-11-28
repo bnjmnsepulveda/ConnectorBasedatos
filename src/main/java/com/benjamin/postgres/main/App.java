@@ -17,16 +17,26 @@ public class App {
 
     public static void main(String[] args) {
         Argumentos entrada = null;
+        if (args.length == 0) {
+            imprimirAyuda();
+            System.exit(0);
+        }
+        for (String arg : args) {
+            if (arg.equals("ayuda")) {
+                imprimirAyuda();
+                System.exit(0);
+            }
+        }
         try {
             entrada = ArgumentosHelper.proccessArgs(args, Argumentos.class);
-        } catch (ClassNotFoundException | IllegalAccessException 
-                | IllegalArgumentException | InstantiationException 
+        } catch (ClassNotFoundException | IllegalAccessException
+                | IllegalArgumentException | InstantiationException
                 | NoSuchMethodException | InvocationTargetException e) {
             System.err.println(e.getMessage());
             System.err.println("error ingresando parametros");
             System.exit(1);
         }
-        try {            
+        try {
             //System.out.println("Argumentos de entrada: " + entrada);
             BasedatosService service = new BasedatosService();
             service.setBasedatos(entrada.getBasedatos());
@@ -52,21 +62,31 @@ public class App {
             error.setError("No se pudo establecer conexion a base de datos");
             error.setDescripcion(ce.getMessage());
             System.out.println(new Gson().toJson(error));
-        } catch (DatabaseException de){
+        } catch (DatabaseException de) {
             //de.printStackTrace(System.err);            
             MensajeError error = new MensajeError();
             error.setError("No se pudo ejecutar " + entrada.getSql());
             error.setDescripcion(de.getMessage());
             System.out.println(new Gson().toJson(error));
-        } catch(Exception e){
+        } catch (Exception e) {
             MensajeError error = new MensajeError();
             error.setError("Error no esperado");
             error.setDescripcion(e.getMessage());
             System.out.println(new Gson().toJson(error));
         }
     }
-    
-    public static void imprimirAyuda(){
-        
+
+    public static void imprimirAyuda() {
+        System.out.println("------------------------------------------");
+        System.out.println("----------- Conector basedatos -----------");
+        System.out.println("------------------------------------------\n");
+        System.out.println("ingrese los siguientes parametros con el mismo formato\n");
+        System.out.println("host=HOST_BASEDATOS");
+        System.out.println("basedatos=NOMBRE_BASEDATOS");
+        System.out.println("usuario=USUARIO_BASEDATOS");
+        System.out.println("clave=CLAVE_BASEDATOS");
+        System.out.println("sql=SQL_A_EJECUTAR ejemplo:              --- sql=\"SELECT * FROM usuario\"");
+        System.out.println("formatoSalida=FORMATO_SALIDA_EJECUCION   --- opciones disponibles: json text");
+        System.out.println("ayuda                                    ---  imprime la ayuda y sale del programa.");
     }
 }
