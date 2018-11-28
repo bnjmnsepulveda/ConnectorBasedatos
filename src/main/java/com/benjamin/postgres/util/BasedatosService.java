@@ -48,6 +48,7 @@ public class BasedatosService {
                 resultSet.close();
             }
         } catch (SQLException e) {
+            //ignorar
         }
     }
 
@@ -79,19 +80,18 @@ public class BasedatosService {
                 for (int x = 1; x < cantCol; x++) {
                     key = meta.getColumnLabel(x);
                     javaClass = meta.getColumnClassName(x);
-                    System.out.println("java class=" + javaClass);
                     if (javaClass.equals("java.lang.String")) {
-                        valor = resultSet.getString(meta.getColumnLabel(x));
+                        valor = resultSet.getString(key);
                     } else if (javaClass.equals("java.lang.Boolean")) {
-                        valor = String.valueOf(resultSet.getBoolean(meta.getColumnLabel(x)));
+                        valor = String.valueOf(resultSet.getBoolean(key));
                     } else if (javaClass.equals("java.lang.Integer")) {
-                        valor = String.valueOf(resultSet.getInt(meta.getColumnLabel(x)));
+                        valor = String.valueOf(resultSet.getInt(key));
                     } else if (javaClass.equals("java.lang.Double")) {
-                        valor = String.valueOf(resultSet.getDouble(meta.getColumnLabel(x)));
+                        valor = String.valueOf(resultSet.getDouble(key));
                     } else if (javaClass.equals("java.lang.Long")) {
-                        valor = String.valueOf(resultSet.getInt(meta.getColumnLabel(x)));
+                        valor = String.valueOf(resultSet.getInt(key));
                     } else if (javaClass.equals("java.sql.Timestamp")) {
-                        Timestamp time = resultSet.getTimestamp(meta.getColumnLabel(x));
+                        Timestamp time = resultSet.getTimestamp(key);
                         if (time != null) {
                             valor = String.valueOf(new Date(time.getTime()));
                         } else {
@@ -130,7 +130,6 @@ public class BasedatosService {
                 String javaClass;
                 for (int x = 1; x < cantCol; x++) {
                     javaClass = meta.getColumnClassName(x);
-                    System.out.println("java class=" + javaClass);
                     if (javaClass.equals("java.lang.String")) {
                         valor = resultSet.getString(meta.getColumnLabel(x));
                     } else if (javaClass.equals("java.lang.Boolean")) {
@@ -150,8 +149,7 @@ public class BasedatosService {
                         }
                     } else {
                         throw new RuntimeException("No se pudo convertir resultado a clase java " + javaClass);
-                    }
-    
+                    }    
                     tabla.append(valor);
                     tabla.append(" ");
                 }
