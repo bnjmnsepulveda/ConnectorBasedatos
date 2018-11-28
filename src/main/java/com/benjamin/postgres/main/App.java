@@ -1,10 +1,12 @@
 package com.benjamin.postgres.main;
 
 import com.benjamin.postgres.domain.Argumentos;
+import com.benjamin.postgres.domain.MensajeError;
 import com.benjamin.postgres.exception.ConnectionException;
 import com.benjamin.postgres.exception.DatabaseException;
 import com.benjamin.postgres.util.ArgumentosHelper;
 import com.benjamin.postgres.util.BasedatosService;
+import com.google.gson.Gson;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -45,9 +47,22 @@ public class App {
                 service.ejecutarSQL(entrada.getSql());
             }
         } catch (ConnectionException ce) {
-            ce.printStackTrace(System.err);
+            //ce.printStackTrace(System.err);
+            MensajeError error = new MensajeError();
+            error.setError("No se pudo establecer conexion a base de datos");
+            error.setDescripcion(ce.getMessage());
+            System.out.println(new Gson().toJson(error));
         } catch (DatabaseException de){
-            de.printStackTrace(System.err);
+            //de.printStackTrace(System.err);            
+            MensajeError error = new MensajeError();
+            error.setError("No se pudo ejecutar " + entrada.getSql());
+            error.setDescripcion(de.getMessage());
+            System.out.println(new Gson().toJson(error));
+        } catch(Exception e){
+            MensajeError error = new MensajeError();
+            error.setError("Error no esperado");
+            error.setDescripcion(e.getMessage());
+            System.out.println(new Gson().toJson(error));
         }
     }
     

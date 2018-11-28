@@ -33,7 +33,7 @@ public class BasedatosService {
         try {
             Class.forName("org.postgresql.Driver").newInstance();
             connection = DriverManager.getConnection(url, usuario, clave);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        } catch (Exception ex) {
             throw new ConnectionException(ex);
         }
     }
@@ -74,7 +74,6 @@ public class BasedatosService {
             resultSet = preparedStatement.executeQuery();
             ResultSetMetaData meta = resultSet.getMetaData();
             int cantCol = meta.getColumnCount();
-            System.out.println("columnas:" + cantCol);
             while (resultSet.next()) {
                 JsonObject json = new JsonObject();
                 String valor = "vacio";
