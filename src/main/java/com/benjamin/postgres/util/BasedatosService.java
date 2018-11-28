@@ -72,14 +72,17 @@ public class BasedatosService {
             resultSet = preparedStatement.executeQuery();
             ResultSetMetaData meta = resultSet.getMetaData();
             int cantCol = meta.getColumnCount();
+            System.out.println("columnas:" + cantCol);
             while (resultSet.next()) {
                 JsonObject json = new JsonObject();
                 String valor = "vacio";
                 String key;
                 String javaClass;
-                for (int x = 1; x < cantCol; x++) {
-                    key = meta.getColumnLabel(x);
-                    javaClass = meta.getColumnClassName(x);
+                int index;
+                for (int x = 0; x < cantCol; x++) {
+                    index = x + 1;
+                    key = meta.getColumnLabel(index);
+                    javaClass = meta.getColumnClassName(index);
                     if (javaClass.equals("java.lang.String")) {
                         valor = resultSet.getString(key);
                     } else if (javaClass.equals("java.lang.Boolean")) {
@@ -109,6 +112,9 @@ public class BasedatosService {
         } finally {
             disconnect();
         }
+        if(jsonArray.size() == 1){
+            return jsonArray.get(0).toString();
+        }
         return jsonArray.toString();
     }
 
@@ -120,28 +126,34 @@ public class BasedatosService {
             resultSet = preparedStatement.executeQuery();
             ResultSetMetaData meta = resultSet.getMetaData();
             int cantCol = meta.getColumnCount();
-            for (int x = 1; x < cantCol; x++) {
-                tabla.append(meta.getColumnLabel(x).toUpperCase());
+            int indexCol;
+            for (int x = 0; x < cantCol; x++) {
+                indexCol = x +1;
+                tabla.append(meta.getColumnLabel(indexCol).toUpperCase());
                 tabla.append(" ");
             }
             tabla.append("\n");
             while (resultSet.next()) {
                 String valor = "vacio";
                 String javaClass;
-                for (int x = 1; x < cantCol; x++) {
-                    javaClass = meta.getColumnClassName(x);
+                String columna;
+                int index;
+                for (int x = 0; x < cantCol; x++) {
+                    index = x +1;
+                    javaClass = meta.getColumnClassName(index);
+                    columna =meta.getColumnLabel(index);
                     if (javaClass.equals("java.lang.String")) {
-                        valor = resultSet.getString(meta.getColumnLabel(x));
+                        valor = resultSet.getString(columna);
                     } else if (javaClass.equals("java.lang.Boolean")) {
-                        valor = String.valueOf(resultSet.getBoolean(meta.getColumnLabel(x)));
+                        valor = String.valueOf(resultSet.getBoolean(columna));
                     } else if (javaClass.equals("java.lang.Integer")) {
-                        valor = String.valueOf(resultSet.getInt(meta.getColumnLabel(x)));
+                        valor = String.valueOf(resultSet.getInt(columna));
                     } else if (javaClass.equals("java.lang.Double")) {
-                        valor = String.valueOf(resultSet.getDouble(meta.getColumnLabel(x)));
+                        valor = String.valueOf(resultSet.getDouble(columna));
                     } else if (javaClass.equals("java.lang.Long")) {
-                        valor = String.valueOf(resultSet.getInt(meta.getColumnLabel(x)));
+                        valor = String.valueOf(resultSet.getInt(columna));
                     } else if (javaClass.equals("java.sql.Timestamp")) {
-                        Timestamp time = resultSet.getTimestamp(meta.getColumnLabel(x));
+                        Timestamp time = resultSet.getTimestamp(columna);
                         if (time != null) {
                             valor = String.valueOf(new Date(time.getTime()));
                         } else {

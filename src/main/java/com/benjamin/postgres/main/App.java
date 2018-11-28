@@ -25,7 +25,7 @@ public class App {
             if (entrada.getSql().toLowerCase().startsWith("select ")) {
                 if (entrada.getFormatoSalida().equals("json")) {
                     salida = service.ejecutarResultadosJson(entrada.getSql());
-                } else if (entrada.getFormatoSalida().equals("tabla")) {
+                } else if (entrada.getFormatoSalida().equals("text")) {
                     salida = service.ejecutarResultadosTabla(entrada.getSql());
                 } else {
                     salida = service.ejecutarResultadosJson(entrada.getSql());
@@ -38,5 +38,9 @@ public class App {
         } catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace(System.err);
         }
+    }
+    
+    public static void imprimirAyuda(){
+        
     }
 }
