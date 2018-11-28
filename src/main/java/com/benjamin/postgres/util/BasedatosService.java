@@ -1,5 +1,7 @@
 package com.benjamin.postgres.util;
 
+import com.benjamin.postgres.exception.ConnectionException;
+import com.benjamin.postgres.exception.DatabaseException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.sql.Connection;
@@ -32,7 +34,7 @@ public class BasedatosService {
             Class.forName("org.postgresql.Driver").newInstance();
             connection = DriverManager.getConnection(url, usuario, clave);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            throw new RuntimeException(ex);
+            throw new ConnectionException(ex);
         }
     }
 
@@ -58,7 +60,7 @@ public class BasedatosService {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e);
         } finally {
             disconnect();
         }
