@@ -40,8 +40,8 @@
                         <argument>basedatos=chat_acd</argument>
                         <argument>usuario=postgres</argument>
                         <argument>clave=rockmetal</argument>
-                        <argument>resultados=true</argument> 
-                        <argument>sql=SELECT * FROM conversacion</argument>
+                        <argument>formatoSalida=json</argument> 
+                        <argument>sql=SELECT * FROM usuario</argument>
                     </arguments>
                 </configuration>
             </plugin>

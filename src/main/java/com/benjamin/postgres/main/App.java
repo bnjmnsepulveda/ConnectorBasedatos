@@ -21,9 +21,16 @@ public class App {
             service.setClave(entrada.getClave());
             service.setHost(entrada.getHost());
             service.setUsuario(entrada.getUsuario());
-            if (entrada.isResultados()) {
-                String json = service.ejecutarResultadosTabla(entrada.getSql());
-                System.out.println("resultados:\n " + json);
+            String salida = "";
+            if (entrada.getSql().toLowerCase().startsWith("select ")) {
+                if (entrada.getFormatoSalida().equals("json")) {
+                    salida = service.ejecutarResultadosJson(entrada.getSql());
+                } else if (entrada.getFormatoSalida().equals("tabla")) {
+                    salida = service.ejecutarResultadosTabla(entrada.getSql());
+                } else {
+                    salida = service.ejecutarResultadosJson(entrada.getSql());
+                }
+                System.out.println("resultados:\n " + salida);
             } else {
                 service.ejecutarSQL(entrada.getSql());
             }
