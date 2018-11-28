@@ -1,8 +1,10 @@
 
 package com.benjamin.postgres.domain;
 
+import com.google.gson.Gson;
+
 /**
- *
+ * Argumentos de inicio para ejecutar la aplicacion.
  * @author benjamin
  */
 public class Argumentos {
@@ -12,8 +14,17 @@ public class Argumentos {
     private String usuario;
     private String clave;
     private String sql;
-    private boolean resultados;
+    private String formatoSalida;
 
+    public String getFormatoSalida() {
+        return formatoSalida;
+    }
+
+    public void setFormatoSalida(String formatoSalida) {
+        this.formatoSalida = formatoSalida;
+    }
+
+    
     public String getHost() {
         return host;
     }
@@ -54,17 +65,9 @@ public class Argumentos {
         this.sql = sql;
     }
 
-    public boolean isResultados() {
-        return resultados;
-    }
-
-    public void setResutados(boolean resutados) {
-        this.resultados = resutados;
-    }
-
     @Override
     public String toString() {
-        return "Argumentos{" + "host=" + host + ", basedatos=" + basedatos + ", usuario=" + usuario + ", clave=" + clave + ", sql=" + sql + ", resutados=" + resultados + '}';
+        return "Argumentos: " + new Gson().toJson(this);
     }
 
 }
