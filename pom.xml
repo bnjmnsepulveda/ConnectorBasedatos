@@ -28,7 +28,7 @@
     
     <build>
         <plugins>
-            
+            <!-- PLUGIN PARA EJECUCION DE PROGRAMA CON mvn exec:java -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -39,24 +39,14 @@
                         <argument>host=localhost</argument>
                         <argument>basedatos=chat_acd</argument>
                         <argument>usuario=postgres</argument>
-                        <argument>clave=rockmetal3</argument>
-                        <argument>formatoSalida=text</argument> 
+                        <argument>clave=rockmetal</argument>
+                        <argument>formatoSalida=json</argument> 
                         <argument>sql=SELECT count(*) FROM usuario</argument>
+                        <!--<argument>ayuda</argument>-->
                     </arguments>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>                    
-                    <archive>
-                        <manifest>
-                            <mainClass>com.benjamin.postgres.main.App</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
+            <!-- COMPILACION PROGRAMA version y jdk de jar a compilar-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -66,7 +56,28 @@
                     <target>${jdk.version}</target>
                 </configuration>
             </plugin>
-           
+            <!-- COMPILAR jar CON LIBRERIAS INTEGRADAS DENTRO DE ARCHIVO jar -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.benjamin.postgres.main.App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
